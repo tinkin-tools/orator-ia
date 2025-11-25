@@ -1,0 +1,15 @@
+.tab {
+  padding: 8px 12px;
+  border-radius: var(--radius-2xl);
+  border: none;
+}
+
+.tab-active {
+  color: var(--neutral-800);
+  background: var(--gradient-1);
+}
+
+.tab-inactive {
+  color: var(--primary-300);
+  background: transparent;
+}

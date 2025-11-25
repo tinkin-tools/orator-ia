@@ -1,51 +1,50 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import "./styles/index.css"
+import { useState } from "react"
+import NavBar from "./components/ui/navBar/NavBar"
+import Dashboard from "./pages/dashboard/Dashboard"
+import Record from "./pages/record/Record"
+import History from "./pages/history/History"
+
+type Tab = "dashboard" | "record" | "history"
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const [activeTab, setActiveTab] = useState<Tab>("dashboard")
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
+  const buildContent = () => {
+    switch (activeTab) {
+      case "dashboard":
+        return <Dashboard />
+      case "record":
+        return <Record />
+      case "history":
+        return <History />
+    }
   }
 
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
-  );
+    <>
+      <NavBar
+        tabs={[
+          {
+            label: "Dashboard",
+            isActive: activeTab == "dashboard",
+            onClick: () => setActiveTab("dashboard"),
+          },
+          {
+            label: "Nueva Grabación",
+            isActive: activeTab == "record",
+            onClick: () => setActiveTab("record"),
+          },
+          {
+            label: "Historial",
+            isActive: activeTab == "history",
+            onClick: () => setActiveTab("history"),
+          },
+        ]}
+      />
+      {buildContent()}
+    </>
+  )
 }
 
-export default App;
+export default App

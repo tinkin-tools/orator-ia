@@ -1,0 +1,28 @@
+@import "./design-system.css";
+@import "./components.css";
+
+:root {
+  /* === THEME COLORS === */
+  --text-primary: var(--neutral-900);
+  --text-secondary: var(--neutral-700);
+  --text-muted: var(--neutral-500);
+  --background-primary: var(--neutral-50);
+  --background-secondary: var(--neutral-100);
+  --border-color: var(--neutral-200);
+
+  /* Apply base typography */
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-normal);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+
+  /* Apply theme colors */
+  color: var(--text-primary);
+  background-color: var(--background-primary);
+}
