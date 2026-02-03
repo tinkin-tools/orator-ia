@@ -2,11 +2,14 @@ import "./history.css"
 import { useToastStore } from "../../stores/toast.store"
 import { ToastVariant } from "../../types/toast.types"
 import React from "react"
+import { AlertVariant } from "../../types/alert.types"
+import { useAlertStore } from "../../stores/alert.store"
 
 export interface HistoryProps {}
 
 const History: React.FC<HistoryProps> = ({}) => {
   const { addToast, removeToast } = useToastStore()
+  const { addAlert, removeAlert } = useAlertStore()
 
   const onClick = (variant: ToastVariant) => {
     const id = Date.now().toString()
@@ -18,28 +21,67 @@ const History: React.FC<HistoryProps> = ({}) => {
     })
   }
 
+  const onAlertBtnClick = (variant: AlertVariant) => {
+    const id = Date.now().toString()
+    addAlert({
+      id: id,
+      title: "Alert Title",
+      description: "This is an alert",
+      variant: variant,
+      onActionBtn1: () => removeAlert(id),
+    })
+  }
+
   return (
     <>
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
-          width: "25%",
-          gap: "8px",
+          flexDirection: "row",
+          gap: "16px",
         }}
       >
-        <button onClick={() => onClick(ToastVariant.Error)}>
-          Add error toast
-        </button>
-        <button onClick={() => onClick(ToastVariant.Warning)}>
-          Add warning toast
-        </button>
-        <button onClick={() => onClick(ToastVariant.Info)}>
-          Add info toast
-        </button>
-        <button onClick={() => onClick(ToastVariant.Success)}>
-          Add success toast
-        </button>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "8px",
+          }}
+        >
+          <button onClick={() => onClick(ToastVariant.Error)}>
+            Add error toast
+          </button>
+          <button onClick={() => onClick(ToastVariant.Warning)}>
+            Add warning toast
+          </button>
+          <button onClick={() => onClick(ToastVariant.Info)}>
+            Add info toast
+          </button>
+          <button onClick={() => onClick(ToastVariant.Success)}>
+            Add success toast
+          </button>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "8px",
+          }}
+        >
+          <button onClick={() => onAlertBtnClick(AlertVariant.Error)}>
+            Add error alert
+          </button>
+          <button onClick={() => onAlertBtnClick(AlertVariant.Warning)}>
+            Add warning alert
+          </button>
+          <button onClick={() => onAlertBtnClick(AlertVariant.Info)}>
+            Add info alert
+          </button>
+          <button onClick={() => onAlertBtnClick(AlertVariant.Success)}>
+            Add success alert
+          </button>
+        </div>
       </div>
     </>
   )

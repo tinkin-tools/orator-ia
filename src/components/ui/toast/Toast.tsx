@@ -32,7 +32,7 @@ const Toast: React.FC<ToastProps> = ({ description, variant, onClose }) => {
 
   return (
     <div className={getVariantClass()}>
-      <div className="toast__icon"> {getIcon()} </div>
+      <div className={`toast__icon toast__icon--${variant}`}> {getIcon()} </div>
       <p className="toast__description"> {description} </p>
 
       <button className="toast__close-container" onClick={onClose}>
