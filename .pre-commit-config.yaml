@@ -1,0 +1,46 @@
+repos:
+  # Hooks generales
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+
+  # Frontend - TypeScript/React
+  - repo: local
+    hooks:
+      - id: typescript-check
+        name: TypeScript Check
+        entry: npm run type-check
+        language: system
+        files: \.(ts|tsx)$
+        pass_filenames: false
+
+      - id: eslint
+        name: ESLint
+        entry: npm run lint:fix
+        language: system
+        files: \.(ts|tsx)$
+        pass_filenames: false
+
+      - id: prettier
+        name: Prettier
+        entry: npm run format
+        language: system
+        files: \.(ts|tsx|js|jsx|json|css|md)$
+        pass_filenames: false
+
+  # Backend - Rust
+  - repo: https://github.com/doublify/pre-commit-rust
+    rev: v1.0
+    hooks:
+      - id: fmt
+        name: Rust Format
+        args: ["--manifest-path", "src-tauri/Cargo.toml", "--"]
+      - id: clippy
+        name: Rust Clippy
+        args:
+          ["--manifest-path", "src-tauri/Cargo.toml", "--", "-D", "warnings"]
