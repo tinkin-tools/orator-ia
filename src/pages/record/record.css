@@ -1,0 +1,127 @@
+.record {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  gap: 16px;
+  flex: 1;
+  background-color: var(--neutral-800);
+}
+
+/* === Title & subtitle === */
+.record__title {
+  color: var(--neutral-50);
+}
+
+.record__subtitle {
+  color: var(--neutral-300);
+  max-width: 600px;
+}
+
+/* === Waveform visualizer === */
+.record__waveform {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 48px;
+  margin: 16px 0;
+}
+
+.record__waveform-bar {
+  width: 3px;
+  border-radius: 2px;
+  background: var(--primary-400);
+  transition: height 0.15s ease;
+}
+
+/* === Timer === */
+.record__timer {
+  color: var(--neutral-50);
+  font-variant-numeric: tabular-nums;
+}
+
+/* === Action buttons row === */
+.record__actions {
+  display: flex;
+  gap: 24px;
+  margin-top: 16px;
+  width: 100%;
+  max-width: 520px;
+}
+
+.record__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 1;
+  padding: 12px 24px;
+  border-radius: var(--radius-3xl);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.record__btn:hover {
+  opacity: 0.9;
+}
+
+.record__btn:active {
+  opacity: 0.8;
+}
+
+/* Outline variant (Pausar) */
+.record__btn--outline {
+  background: transparent;
+  border: 1.5px solid var(--primary-400);
+  color: var(--primary-400);
+}
+
+/* Filled variant (Finalizar) */
+.record__btn--filled {
+  border: none;
+  background: var(--gradient-1);
+  color: var(--neutral-900);
+}
+
+.record__btn-icon {
+  font-size: var(--font-size-sm);
+}
+
+/* === Start button (idle state) === */
+.record__start-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--radius-3xl);
+  background: var(--gradient-1);
+  color: var(--neutral-900);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.record__start-btn:hover {
+  opacity: 0.9;
+}
+
+.record__start-btn:active {
+  opacity: 0.8;
+}
+
+.record__start-btn-icon {
+  font-size: var(--font-size-sm);
+  letter-spacing: -2px;
+}
