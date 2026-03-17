@@ -6,8 +6,9 @@
   align-items: center;
   background: var(--neutral-600);
   box-shadow: var(--shadow-2);
-  padding: 0 112px;
-  gap: 64px;
+  padding: 0 24px;
+  gap: 24px;
+  flex-shrink: 0;
 }
 
 .navbar .logo {

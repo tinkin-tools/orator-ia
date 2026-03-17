@@ -1,4 +1,5 @@
 import "./styles/index.css"
+import "./App.css"
 import { useState } from "react"
 import NavBar from "./components/ui/navBar/NavBar"
 import Dashboard from "./pages/dashboard/Dashboard"
@@ -22,7 +23,7 @@ function App() {
   }
 
   return (
-    <>
+    <div className="app">
       <NavBar
         tabs={[
           {
@@ -42,8 +43,10 @@ function App() {
           },
         ]}
       />
-      {buildContent()}
-    </>
+      <div className="app__content">
+        {buildContent()}
+      </div>
+    </div>
   )
 }
 
