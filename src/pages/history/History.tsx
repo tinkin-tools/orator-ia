@@ -5,9 +5,9 @@ import React from "react"
 import { AlertVariant } from "../../types/alert.types"
 import { useAlertStore } from "../../stores/alert.store"
 
-export interface HistoryProps {}
+export interface HistoryProps { }
 
-const History: React.FC<HistoryProps> = ({}) => {
+const History: React.FC<HistoryProps> = ({ }) => {
   const { addToast, removeToast } = useToastStore()
   const { addAlert, removeAlert } = useAlertStore()
 
@@ -35,18 +35,10 @@ const History: React.FC<HistoryProps> = ({}) => {
   return (
     <>
       <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: "16px",
-        }}
+        className="history__container"
       >
         <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "8px",
-          }}
+          className="history__container__buttons"
         >
           <button onClick={() => onClick(ToastVariant.Error)}>
             Add error toast
@@ -63,11 +55,7 @@ const History: React.FC<HistoryProps> = ({}) => {
         </div>
 
         <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "8px",
-          }}
+          className="history__container__buttons"
         >
           <button onClick={() => onAlertBtnClick(AlertVariant.Error)}>
             Add error alert
