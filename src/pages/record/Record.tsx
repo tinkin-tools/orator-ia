@@ -1,5 +1,6 @@
 import "./record.css"
 import React, { useState, useEffect, useRef, useCallback } from "react"
+import Modal from "../../components/ui/modal/Modal"
 
 export interface RecordProps {}
 
@@ -9,6 +10,7 @@ const Record: React.FC<RecordProps> = ({}) => {
   const [isRecording, setIsRecording] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const [elapsedSeconds, setElapsedSeconds] = useState(0)
+  const [showModal, setShowModal] = useState(false)
   const [bars, setBars] = useState<number[]>(() =>
     Array.from({ length: TOTAL_BARS }, () => 4)
   )
@@ -64,12 +66,22 @@ const Record: React.FC<RecordProps> = ({}) => {
     startTimerAndAnimation()
   }
 
-  const handleStop = () => {
+  const handleStopClick = () => {
+    setShowModal(true)
+  }
+
+  const handleConfirmStop = () => {
     setIsRecording(false)
     setIsPaused(false)
     stopTimerAndAnimation()
     setElapsedSeconds(0)
     setBars(Array.from({ length: TOTAL_BARS }, () => 4))
+    setShowModal(false)
+    // Aquí iría la lógica para enviar el audio a analizar
+  }
+
+  const handleCancelStop = () => {
+    setShowModal(false)
   }
 
   if (!isRecording) {
@@ -115,12 +127,21 @@ const Record: React.FC<RecordProps> = ({}) => {
         </button>
         <button
           className="record__btn record__btn--filled"
-          onClick={handleStop}
+          onClick={handleStopClick}
         >
           <span className="record__btn-icon">&#9632;</span>
           Finalizar grabación
         </button>
       </div>
+
+      <Modal
+        isOpen={showModal}
+        onClose={handleCancelStop}
+        title="¿Quieres finalizar la grabación?"
+        description="Al aceptar se enviará a analizar y te devolveremos información al respecto."
+        confirmText="Finalizar grabación"
+        onConfirm={handleConfirmStop}
+      />
     </div>
   )
 }
