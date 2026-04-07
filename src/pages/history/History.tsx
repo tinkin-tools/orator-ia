@@ -4,6 +4,7 @@ import { ToastVariant } from "../../types/toast.types"
 import React from "react"
 import { AlertVariant } from "../../types/alert.types"
 import { useAlertStore } from "../../stores/alert.store"
+import AlertLayout from "../../layouts/alert/AlertLayout"
 
 export interface HistoryProps { }
 
@@ -27,13 +28,18 @@ const History: React.FC<HistoryProps> = ({ }) => {
       id: id,
       title: "Alert Title",
       description: "This is an alert",
+      actionBtn1Label: "Close",
+      actionBtn2Label: "close",
       variant: variant,
       onActionBtn1: () => removeAlert(id),
+      onActionBtn2: () => removeAlert(id),
+      onDetails: () => removeAlert(id),
     })
   }
 
   return (
     <>
+      <AlertLayout />
       <div
         className="history__container"
       >

@@ -6,8 +6,10 @@ export interface AlertItem {
   title: string
   description: string
   variant: AlertVariant
+  actionBtn1Label: string
+  actionBtn2Label: string
   onActionBtn1: () => void
-  onActionBtn2?: () => void
+  onActionBtn2: () => void
   onDetails?: () => void
 }
 
@@ -15,6 +17,7 @@ interface AlertStore {
   alerts: AlertItem[]
   addAlert: (alert: AlertItem) => void
   removeAlert: (id: string) => void
+  clearAlerts: () => void
 }
 
 export const useAlertStore = create<AlertStore>()((set) => ({
@@ -24,4 +27,5 @@ export const useAlertStore = create<AlertStore>()((set) => ({
     set((state) => ({
       alerts: state.alerts.filter((value) => value.id != id),
     })),
+  clearAlerts: () => set({ alerts: [] }),
 }))

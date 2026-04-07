@@ -8,11 +8,23 @@ interface AlertProps {
   title: string
   description: string
   variant: AlertVariant
+  actionBtn1Label: string
+  actionBtn2Label: string
   onActionBtn1: () => void
   onActionBtn2?: () => void
+  onDetails?: () => void
 }
 
-const Alert: React.FC<AlertProps> = ({ title, description, variant, onActionBtn1 }) => {
+const Alert: React.FC<AlertProps> = ({
+  title,
+  description,
+  variant,
+  actionBtn1Label,
+  actionBtn2Label,
+  onActionBtn1,
+  onActionBtn2,
+  onDetails,
+}) => {
   const getVariantClass = () => {
     return `alert alert--${variant}`
   }
@@ -32,22 +44,34 @@ const Alert: React.FC<AlertProps> = ({ title, description, variant, onActionBtn1
     }
   }
 
-  return <div className={getVariantClass()}>
-    <div className={`alert__icon alert__icon--${variant}`}>
-      {getIcon()}
-    </div>
-    <div className="alert_text__content">
-      <h4 className="alert__title">{title}</h4>
-      <p className="alert__description">{description}</p>
-      <div className="alert__btn_container">
-        <p className="alert__btn" onClick={onActionBtn1}>Action 1</p>
-        <p className="alert__btn">Action 2</p>
+  return (
+    <div className={getVariantClass()}>
+      <div className={`alert__icon alert__icon--${variant}`}>
+        {getIcon()}
+      </div>
+      <div className="alert_text__content">
+        <h4 className="alert__title">{title}</h4>
+        <p className="alert__description">{description}</p>
+        <div className="alert__btn_container">
+          <p
+            className="alert__btn"
+            onClick={onActionBtn1}
+          >
+            {actionBtn1Label}
+          </p>
+          <p
+            className="alert__btn"
+            onClick={onActionBtn2}
+          >
+            {actionBtn2Label}
+          </p>
+        </div>
+      </div>
+      <div>
+        <p className="details__btn" onClick={onDetails}>Details </p>
       </div>
     </div>
-    <div>
-      <p className="details__btn">Details </p>
-    </div>
-  </div>
+  )
 }
 
 export default Alert
