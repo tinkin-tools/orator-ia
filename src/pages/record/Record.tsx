@@ -1,14 +1,32 @@
 import "./record.css"
 import React, { useState, useEffect, useRef, useCallback } from "react"
 import Modal from "../../components/ui/modal/Modal"
+import { useRecording } from "../../hooks/useRecording"
 
 export interface RecordProps {}
 
 const TOTAL_BARS = 40
 
+const generateOutputPath = (): string => {
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-")
+  return `recording_${timestamp}.wav`
+}
+
 const Record: React.FC<RecordProps> = ({}) => {
-  const [isRecording, setIsRecording] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
+  const {
+    status: recordingStatus,
+    isLoading,
+    error,
+    start: startRecording,
+    stop: stopRecording,
+    pause: pauseRecording,
+    resume: resumeRecording,
+    clearError,
+  } = useRecording()
+
+  const isRecording = recordingStatus !== "idle"
+  const isPaused = recordingStatus === "paused"
+
   const [elapsedSeconds, setElapsedSeconds] = useState(0)
   const [showModal, setShowModal] = useState(false)
   const [bars, setBars] = useState<number[]>(() =>
@@ -48,36 +66,46 @@ const Record: React.FC<RecordProps> = ({}) => {
     return () => stopTimerAndAnimation()
   }, [stopTimerAndAnimation])
 
-  const handleStart = () => {
-    setIsRecording(true)
-    setIsPaused(false)
-    setElapsedSeconds(0)
-    startTimerAndAnimation()
+  const handleStart = async () => {
+    clearError()
+    const outputPath = generateOutputPath()
+    const result = await startRecording(outputPath)
+    if (result) {
+      setElapsedSeconds(0)
+      startTimerAndAnimation()
+    }
   }
 
-  const handlePause = () => {
-    setIsPaused(true)
-    stopTimerAndAnimation()
-    setBars(Array.from({ length: TOTAL_BARS }, () => 4))
+  const handlePause = async () => {
+    const success = await pauseRecording()
+    if (success) {
+      stopTimerAndAnimation()
+      setBars(Array.from({ length: TOTAL_BARS }, () => 4))
+    }
   }
 
-  const handleResume = () => {
-    setIsPaused(false)
-    startTimerAndAnimation()
+  const handleResume = async () => {
+    const success = await resumeRecording()
+    if (success) {
+      startTimerAndAnimation()
+    }
   }
 
   const handleStopClick = () => {
     setShowModal(true)
   }
 
-  const handleConfirmStop = () => {
-    setIsRecording(false)
-    setIsPaused(false)
+  const handleConfirmStop = async () => {
+    const result = await stopRecording()
     stopTimerAndAnimation()
     setElapsedSeconds(0)
     setBars(Array.from({ length: TOTAL_BARS }, () => 4))
     setShowModal(false)
-    // Aquí iría la lógica para enviar el audio a analizar
+
+    if (result) {
+      console.log("Recording saved:", result.output_path)
+      // TODO: Navigate to analysis or handle the recorded file
+    }
   }
 
   const handleCancelStop = () => {
@@ -87,9 +115,19 @@ const Record: React.FC<RecordProps> = ({}) => {
   if (!isRecording) {
     return (
       <div className="record">
-        <button className="record__start-btn" onClick={handleStart}>
+        {error && (
+          <div className="record__error">
+            <p>{error}</p>
+            <button onClick={clearError}>Dismiss</button>
+          </div>
+        )}
+        <button
+          className="record__start-btn"
+          onClick={handleStart}
+          disabled={isLoading}
+        >
           <span className="record__start-btn-icon">&#9654;&#10073;&#10073;</span>
-          Iniciar grabación
+          {isLoading ? "Iniciando..." : "Iniciar grabación"}
         </button>
       </div>
     )
@@ -102,6 +140,13 @@ const Record: React.FC<RecordProps> = ({}) => {
         Puedes minimizar la app, continuaremos grabando. Si cierras la app se
         detendrá la grabación automáticamente.
       </p>
+
+      {error && (
+        <div className="record__error">
+          <p>{error}</p>
+          <button onClick={clearError}>Dismiss</button>
+        </div>
+      )}
 
       <div className="record__waveform">
         {bars.map((height, i) => (
@@ -119,6 +164,7 @@ const Record: React.FC<RecordProps> = ({}) => {
         <button
           className="record__btn record__btn--outline"
           onClick={isPaused ? handleResume : handlePause}
+          disabled={isLoading}
         >
           <span className="record__btn-icon">
             {isPaused ? "\u25B6" : "\u275A\u275A"}
@@ -128,6 +174,7 @@ const Record: React.FC<RecordProps> = ({}) => {
         <button
           className="record__btn record__btn--filled"
           onClick={handleStopClick}
+          disabled={isLoading}
         >
           <span className="record__btn-icon">&#9632;</span>
           Finalizar grabación
