@@ -35,7 +35,24 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
+  justify-items: center;
   color: inherit;
+}
+
+.toast__icon--warning {
+  color: var(--warning-500);
+}
+
+.toast__icon--success {
+  color: var(--success-500);
+}
+
+.toast__icon--error {
+  color: var(--error-500);
+}
+
+.toast__icon--info {
+  color: var(--info-500);
 }
 
 .toast__description {

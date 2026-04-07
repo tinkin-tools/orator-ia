@@ -10,6 +10,7 @@ const ToastLayout = () => {
       <div className="toast-container">
         {toasts.map((toast) => (
           <Toast
+            key={toast.id}
             description={toast.description}
             variant={toast.variant}
             onClose={() => removeToast(toast.id)}
