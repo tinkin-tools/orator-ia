@@ -1,0 +1,103 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 1000;
+  padding: 24px;
+  animation: modalFadeIn 0.2s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal__content {
+  background-color: var(--neutral-800);
+  border-radius: var(--radius-2xl);
+  padding: 32px;
+  max-width: 480px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: modalSlideIn 0.3s ease;
+  box-shadow: var(--shadow-2);
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal__title {
+  color: var(--neutral-50);
+  text-align: center;
+  margin: 0;
+}
+
+.modal__description {
+  color: var(--neutral-300);
+  text-align: center;
+  margin: 0;
+}
+
+.modal__actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.modal__btn {
+  flex: 1;
+  padding: 12px 24px;
+  border-radius: var(--radius-3xl);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+  border: none;
+}
+
+.modal__btn:hover {
+  opacity: 0.9;
+}
+
+.modal__btn:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+.modal__btn--cancel {
+  background: transparent;
+  border: 1.5px solid var(--neutral-400);
+  color: var(--neutral-200);
+}
+
+.modal__btn--confirm {
+  background: var(--gradient-1);
+  color: var(--neutral-900);
+}
+
+.modal__btn--danger {
+  background: var(--error-500);
+  color: var(--neutral-50);
+}
