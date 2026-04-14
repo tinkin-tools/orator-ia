@@ -305,12 +305,6 @@ pub struct CpalRecorder {
     _thread: JoinHandle<()>,
 }
 
-impl Default for CpalRecorder {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 impl CpalRecorder {
     pub fn new() -> Self {
         let (cmd_tx, cmd_rx): (Sender<AudioCommand>, Receiver<AudioCommand>) = mpsc::channel();

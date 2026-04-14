@@ -11,7 +11,7 @@ pub use domain::settings::entities::{AudioProcessingConfig, Settings};
 use std::sync::Mutex;
 
 // Import the new modular components
-use application::audio::{ProcessAudioUseCase, RecordingUseCase};
+use application::audio::ProcessAudioUseCase;
 use application::settings::{GetSettingsUseCase, ResetSettingsUseCase, UpdateSettingsUseCase};
 use domain::settings::repositories::SettingsRepository;
 use infrastructure::audio::{CpalRecorder, SymphoniaAudioProcessor};
@@ -55,8 +55,7 @@ pub fn run() {
     let reset_settings_use_case = Mutex::new(ResetSettingsUseCase::new(settings_repository));
 
     // Recording
-    let recording_service = CpalRecorder::new();
-    let recording_use_case = Mutex::new(RecordingUseCase::new(recording_service));
+    let recording_service = Mutex::new(CpalRecorder::new());
 
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
@@ -64,7 +63,7 @@ pub fn run() {
         .manage(get_settings_use_case)
         .manage(update_settings_use_case)
         .manage(reset_settings_use_case)
-        .manage(recording_use_case)
+        .manage(recording_service)
         .invoke_handler(tauri::generate_handler![
             process_audio_file,
             get_all_settings,
