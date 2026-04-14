@@ -14,7 +14,7 @@ use std::sync::Mutex;
 use application::audio::ProcessAudioUseCase;
 use application::settings::{GetSettingsUseCase, ResetSettingsUseCase, UpdateSettingsUseCase};
 use domain::settings::repositories::SettingsRepository;
-use infrastructure::audio::SymphoniaAudioProcessor;
+use infrastructure::audio::{CpalRecorder, SymphoniaAudioProcessor};
 use infrastructure::settings::FileSettingsRepository;
 use presentation::commands::*;
 
@@ -54,12 +54,16 @@ pub fn run() {
         Mutex::new(UpdateSettingsUseCase::new(settings_repository.clone()));
     let reset_settings_use_case = Mutex::new(ResetSettingsUseCase::new(settings_repository));
 
+    // Recording
+    let recording_service = Mutex::new(CpalRecorder::new());
+
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .manage(process_audio_use_case)
         .manage(get_settings_use_case)
         .manage(update_settings_use_case)
         .manage(reset_settings_use_case)
+        .manage(recording_service)
         .invoke_handler(tauri::generate_handler![
             process_audio_file,
             get_all_settings,
@@ -67,7 +71,12 @@ pub fn run() {
             save_settings,
             reset_settings_to_defaults,
             reset_section_to_defaults,
-            get_config_value
+            get_config_value,
+            start_recording,
+            stop_recording,
+            pause_recording,
+            resume_recording,
+            get_recording_status
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
